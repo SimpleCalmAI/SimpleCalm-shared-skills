@@ -1,0 +1,3 @@
+# Keep every file's line endings exactly as committed, on every computer.
+# The practice data must stay byte-for-byte identical, or its fingerprints will not match.
+* -text

@@ -1,0 +1,50 @@
+{
+  "workflow": "snips_intent",
+  "seed": 13,
+  "heldout_share": 0.1,
+  "test_source": "snips_test.csv",
+  "spec_sha256": "8f48d218e5917bf429ddce2ba9a4205bb0cb65857a6ecea1396929d57194fcb2",
+  "builder_sha256": "84ec06ac35a9b2d9d9850400768c1e4c0341e7eb08b5d6e909913a94874c283f",
+  "examples_per_option": {
+    "AddToPlaylist": 2035,
+    "BookRestaurant": 2068,
+    "GetWeather": 2089,
+    "PlayMusic": 2076,
+    "RateBook": 2002,
+    "SearchCreativeWork": 2051,
+    "SearchScreeningEvent": 1941
+  },
+  "examples_csv": {
+    "duplicates_removed": 206,
+    "conflicting_labels": 0,
+    "removed_because_in_test": 0,
+    "rows_over_word_limit": 0
+  },
+  "files": {
+    "train.jsonl": {
+      "rows": 12210,
+      "bytes": 11167381,
+      "sha256": "86ae3fcca91614ef1f97b26245f589db4d28db305c3f94f229ddf6718c223897"
+    },
+    "heldout.jsonl": {
+      "rows": 1357,
+      "bytes": 1242798,
+      "sha256": "e5dd25144e8d1f40e3b23db1ebd7f6ef5634f88713f43528a1f83471687b5fec"
+    },
+    "test.jsonl": {
+      "rows": 695,
+      "bytes": 635479,
+      "sha256": "eb297241fcd29dfbb00ad07098f441e67419cfe5a427007bd618488d3ec604fb"
+    }
+  },
+  "test_csv": {
+    "duplicates_removed": 5,
+    "conflicting_labels": 0,
+    "removed_because_in_test": 0,
+    "rows_over_word_limit": 0
+  },
+  "source": "SNIPS NLU benchmark, 2017-06-custom-intent-engines, https://github.com/sonos/nlu-benchmark (commit b86ac7f1577868c42158d0dec77db50956046696)",
+  "licence": "CC0 1.0 Universal (repository LICENSE)",
+  "licence_checked": "2026-10-28, https://github.com/sonos/nlu-benchmark/blob/b86ac7f1577868c42158d0dec77db50956046696/LICENSE",
+  "generating_model": "none (crowdsourced, human-written)"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "simplecalm-shared-skills",
+  "description": "Free, open-source skills and plugins from SimpleCalm AI",
+  "owner": {
+    "name": "SimpleCalm AI"
+  },
+  "plugins": [
+    {
+      "name": "laya-training",
+      "source": "./laya-training",
+      "description": "Learn to fine-tune and evaluate Laya, the open-weight System 1 decision model, with a guided Kaggle walkthrough and bundled practice data."
+    }
+  ]
+}

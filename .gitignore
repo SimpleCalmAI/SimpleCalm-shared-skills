@@ -1,0 +1,7 @@
+# Local installs made by "npx skills add" without -g
+.agents/
+skills-lock.json
+
+# Python and release files
+__pycache__/
+*.zip

@@ -1,0 +1,16 @@
+{"workflow": "snips_intent", "seed": 13, "heldout_share": 0.1, "text_column": "text",
+ "questions": {"intent": {"type": "choice",
+   "instructions": "What does the person want to do?",
+   "criteria": {
+     "AddToPlaylist": "Add a song, artist or album to a playlist",
+     "BookRestaurant": "Book a table at a restaurant",
+     "GetWeather": "Ask about the weather or a forecast",
+     "PlayMusic": "Play music: a song, artist, album or playlist",
+     "RateBook": "Give a rating to a book",
+     "SearchCreativeWork": "Find a film, TV show, song, book or game",
+     "SearchScreeningEvent": "Find cinema showtimes or what films are on"},
+   "label_column": "intent"}},
+ "source": "SNIPS NLU benchmark, 2017-06-custom-intent-engines, https://github.com/sonos/nlu-benchmark (commit b86ac7f1577868c42158d0dec77db50956046696)",
+ "licence": "CC0 1.0 Universal (repository LICENSE)",
+ "licence_checked": "2026-10-28, https://github.com/sonos/nlu-benchmark/blob/b86ac7f1577868c42158d0dec77db50956046696/LICENSE",
+ "generating_model": "none (crowdsourced, human-written)"}

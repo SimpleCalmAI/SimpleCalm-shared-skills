@@ -1,0 +1,32 @@
+Laya training skill by SimpleCalm AI
+Copyright 2026 SimpleCalm Labs Ltd (trading as SimpleCalm AI) and contributors.
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+This package provides training guidance and helper scripts for Laya.
+Laya is developed by Convai Innovations and its upstream contributors under
+the Apache License, Version 2.0.
+
+Upstream repository: https://github.com/NandhaKishorM/laya
+Upstream licence: https://github.com/NandhaKishorM/laya/blob/fe9a6c35023a7d94102e7feaaeaae8857d9d1b07/LICENSE
+Published model: https://huggingface.co/convaiinnovations/laya
+
+The helper scripts use Laya's documented Python interfaces and training-row
+format. This package does not include the Laya implementation, official
+notebook or model weights. Those components are obtained separately and
+remain subject to their own applicable licences and notices.
+
+Practice data: the assets/snips folder of the laya-training skill contains a
+converted copy of the SNIPS NLU benchmark (2017 custom intent engines) by
+Snips, now managed by Sonos, released under CC0 1.0 Universal:
+https://github.com/sonos/nlu-benchmark
+CC0 places no conditions on use. Separately, the publisher's README states
+that any publication based on the data must include a full citation to:
+Coucke A. et al., "Snips Voice Platform: an embedded Spoken Language
+Understanding system for private-by-design voice interfaces." 2018.
+https://arxiv.org/abs/1805.10190
+
+SimpleCalm AI's guide is an independent project. References to Laya and SNIPS
+identify the software and data it uses; they do not imply endorsement by or
+affiliation with their creators.
+
+This NOTICE is informational and does not add restrictions to the licence.

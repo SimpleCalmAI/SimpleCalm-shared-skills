@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "laya-training",
+  "version": "1.0.11",
+  "description": "Fine-tune and evaluate Laya on labelled data, with before/after benchmarks. Use to train, fine-tune or retrain Laya, or learn the process through an optional guided Kaggle walkthrough with a bundled practice dataset.",
+  "author": {
+    "name": "SimpleCalm AI"
+  },
+  "repository": "https://github.com/SimpleCalmAI/SimpleCalm-shared-skills",
+  "license": "Apache-2.0"
+}

@@ -94,7 +94,7 @@ Not yet verified: running the trained model on your own computer (the final opti
 
 ## Licence and attribution
 
-Version 1.0.10. Copyright 2026 SimpleCalm Labs Ltd (trading as SimpleCalm AI) and contributors.
+Version 1.0.11. Copyright 2026 SimpleCalm Labs Ltd (trading as SimpleCalm AI) and contributors.
 
 This guide, its helper scripts and release documentation are open source under the **Apache License 2.0**. You may use, modify and redistribute them, including commercially, under that licence's terms. Every release includes the complete `LICENSE` and an attribution `NOTICE`. The bundled SNIPS data remains under CC0.
 

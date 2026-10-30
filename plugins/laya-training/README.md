@@ -57,7 +57,7 @@ Choose your agents when asked. The `-g` installs the skill for your whole user a
 
 ### Claude app (web or desktop)
 
-1. Download `laya-training-skill.zip` from the newest `laya-training` release on the [releases page](https://github.com/SimpleCalmAI/SimpleCalm-shared-skills/releases).
+1. Download `laya-training-skill.zip` from the newest release (marked **Latest**) on the [releases page](https://github.com/SimpleCalmAI/SimpleCalm-shared-skills/releases).
 2. In Claude, open **Customize** (called **Plugins** on accounts with the newer layout), go to Skills, and upload the ZIP. Enable the skill. Code execution and file creation must be enabled; organisation settings may also apply.
 3. Start a new chat and use the prompt below.
 

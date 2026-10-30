@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Validate the plugins and skills in this repository.
 
-Usage:  python scripts/validate.py [REPO_ROOT]
+Usage:  python scripts/validate.py [--base GIT_REF] [REPO_ROOT]
+
+With --base (used on pull requests), also requires version bumps: a change under
+plugins/<name>/ needs a higher plugin version, and a change under a skill folder
+needs a higher skill metadata.version, compared with GIT_REF.
 
 Needs the packages in scripts/requirements.txt (jsonschema, PyYAML).
 Exits 1 if any error is found; warnings never fail the run.
@@ -13,6 +17,7 @@ format, and the discovery rules of the skills CLI (https://github.com/vercel-lab
 
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -64,7 +69,10 @@ def check_schema(instance, schema_file, rel):
 
 
 def parse_frontmatter(path, rel):
-    text = path.read_text(encoding="utf-8")
+    return parse_frontmatter_text(path.read_text(encoding="utf-8"), rel)
+
+
+def parse_frontmatter_text(text, rel):
     match = re.match(r"^---\r?\n(.*?)\r?\n---\r?\n", text, re.DOTALL)
     if not match:
         error(rel, "SKILL.md has no YAML frontmatter")
@@ -216,8 +224,86 @@ def check_plugin(plugin_dir, root):
     return names
 
 
+def git(root, *args):
+    return subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True)
+
+
+def version_tuple(version):
+    match = re.match(r"^(\d+)\.(\d+)\.(\d+)", version) if isinstance(version, str) else None
+    return tuple(int(part) for part in match.groups()) if match else None
+
+
+def skill_version(text):
+    match = re.match(r"^---\r?\n(.*?)\r?\n---\r?\n", text, re.DOTALL)
+    try:
+        meta = yaml.safe_load(match.group(1)) if match else None
+    except yaml.YAMLError:
+        return None
+    metadata = meta.get("metadata") if isinstance(meta, dict) else None
+    return metadata.get("version") if isinstance(metadata, dict) else None
+
+
+def check_version_bumps(root, base):
+    """Require higher versions than on the base branch for any plugin or skill that changed."""
+    merge_base = git(root, "merge-base", base, "HEAD")
+    if merge_base.returncode != 0:
+        error("--base", f"cannot find a merge base with '{base}': {merge_base.stderr.strip()}")
+        return
+    base_sha = merge_base.stdout.strip()
+    diff = git(root, "diff", "--name-only", base_sha)
+    if diff.returncode != 0:
+        error("--base", f"git diff failed: {diff.stderr.strip()}")
+        return
+
+    changed_plugins, changed_skills = set(), set()
+    for path in diff.stdout.splitlines():
+        parts = path.split("/")
+        if len(parts) < 3 or parts[0] != "plugins":
+            continue
+        plugin, rest = parts[1], parts[2:]
+        if rest == ["README.md"]:
+            continue
+        changed_plugins.add(plugin)
+        if len(rest) >= 3 and rest[0] == "skills":
+            changed_skills.add((plugin, rest[1]))
+
+    for plugin in sorted(changed_plugins):
+        old = git(root, "show", f"{base_sha}:plugins/{plugin}/plugin.json")
+        new_path = root / "plugins" / plugin / "plugin.json"
+        if old.returncode != 0 or not new_path.is_file():
+            continue  # new or deleted plugin
+        old_version = json.loads(old.stdout).get("version")
+        new_version = json.loads(new_path.read_text(encoding="utf-8")).get("version")
+        if version_tuple(old_version) and version_tuple(new_version) and \
+                version_tuple(new_version) <= version_tuple(old_version):
+            error(f"plugins/{plugin}", f"files changed, but version {new_version} is not higher than {old_version} "
+                                       "on the base branch; bump it in plugin.json and .claude-plugin/plugin.json "
+                                       "(and the README 'Version' line)")
+
+    for plugin, skill in sorted(changed_skills):
+        old = git(root, "show", f"{base_sha}:plugins/{plugin}/skills/{skill}/SKILL.md")
+        new_path = root / "plugins" / plugin / "skills" / skill / "SKILL.md"
+        if old.returncode != 0 or not new_path.is_file():
+            continue  # new or deleted skill
+        old_version = skill_version(old.stdout)
+        new_version = skill_version(new_path.read_text(encoding="utf-8"))
+        if old_version and (not new_version or version_tuple(new_version) is None
+                            or (version_tuple(old_version) and version_tuple(new_version) <= version_tuple(old_version))):
+            error(f"plugins/{plugin}/skills/{skill}/SKILL.md",
+                  f"skill files changed, but metadata.version {new_version} is not higher than {old_version} "
+                  "on the base branch")
+
+
 def main():
-    root = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else SCRIPT_DIR.parent
+    args = sys.argv[1:]
+    base = None
+    if "--base" in args:
+        position = args.index("--base")
+        if position + 1 >= len(args):
+            sys.exit("--base needs a git ref")
+        base = args[position + 1]
+        del args[position:position + 2]
+    root = Path(args[0]).resolve() if args else SCRIPT_DIR.parent
     marketplace_path = root / ".claude-plugin" / "marketplace.json"
     marketplace = load_json(marketplace_path, root)
     plugins_root = root / "plugins"
@@ -237,6 +323,8 @@ def main():
             all_skill_names[name] = path
 
     check_links(root / "README.md", root)
+    if base:
+        check_version_bumps(root, base)
 
     if marketplace is not None:
         rel = marketplace_path.relative_to(root)

@@ -1,12 +1,14 @@
 name: release
 
-# When a PR is merged to main, publish a GitHub release for every plugin whose
-# version has no release yet (tag <plugin>-v<version>). Merges that do not change
-# a plugin's version publish nothing.
+# When a PR is merged to main, publish ONE GitHub release (tagged vYYYY.MM.DD) holding the
+# ZIPs for every plugin and skill, if at least one plugin version has no <plugin>-v<version>
+# tag yet. Merges that do not change a plugin's version publish nothing.
+# Can also be run by hand from the Actions tab.
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: release
@@ -29,29 +31,44 @@ jobs:
           python-version: "3.13"
       - run: python -m pip install -r scripts/requirements.txt
       - run: python scripts/validate.py
-      - name: Publish new plugin versions
+      - name: Publish a release if a plugin version is new
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           TARGET_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          python scripts/build_release.py list | jq -c '.[]' | while read -r plugin; do
-            name=$(jq -r .name <<<"$plugin")
-            version=$(jq -r .version <<<"$plugin")
-            description=$(jq -r .description <<<"$plugin")
-            tag="${name}-v${version}"
-            if gh release view "$tag" >/dev/null 2>&1; then
-              echo "$tag already released; skipping"
-              continue
+          gh api --paginate "repos/$GH_REPO/git/matching-refs/tags" --jq '.[].ref | sub("^refs/tags/"; "")' > tags.txt
+          python scripts/build_release.py plan tags.txt > plan.json
+
+          if [ "$(jq '.new_plugin_tags | length' plan.json)" = "0" ]; then
+            echo "Every plugin version already has a tag; nothing to publish."
+            exit 0
+          fi
+
+          tag=$(jq -r .release_tag plan.json)
+          title=$(jq -r .title plan.json)
+          jq -r .body plan.json > notes.md
+          previous=$(gh release view --json tagName --jq .tagName 2>/dev/null || true)
+
+          python scripts/build_release.py build-all dist
+          notes_args=()
+          if [ -n "$previous" ]; then notes_args=(--notes-start-tag "$previous"); fi
+          gh release create "$tag" dist/*.zip \
+            --target "$TARGET_SHA" \
+            --title "$title" \
+            --notes-file notes.md \
+            --generate-notes "${notes_args[@]}" \
+            --latest
+          echo "Released $tag"
+
+          # Tag each newly released plugin version so it can be pinned (for example with
+          # npx skills add owner/repo#<plugin>-v<version>) and is not released again.
+          jq -r '.new_plugin_tags[]' plan.json | while read -r plugin_tag; do
+            if gh api "repos/$GH_REPO/git/ref/tags/$plugin_tag" >/dev/null 2>&1; then
+              echo "$plugin_tag already exists"
+            else
+              gh api -X POST "repos/$GH_REPO/git/refs" -f ref="refs/tags/$plugin_tag" -f sha="$TARGET_SHA" >/dev/null
+              echo "Tagged $plugin_tag"
             fi
-            out="dist/$name"
-            python scripts/build_release.py build "$name" "$out"
-            gh release create "$tag" "$out"/*.zip \
-              --target "$TARGET_SHA" \
-              --title "$name $version" \
-              --notes "${description}"$'\n\n'"See plugins/${name}/README.md for instructions and details." \
-              --generate-notes \
-              --latest=false
-            echo "released $tag"
           done

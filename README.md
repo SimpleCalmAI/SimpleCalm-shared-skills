@@ -24,7 +24,19 @@ We’ll add more as we develop them.
 
 ## Getting started
 
-Choose a plugin or skill from the lists above, then install it in one of two ways. Each plugin’s own README has full instructions and details of any accounts or tools you’ll need.
+Choose a plugin or skill from the lists above, then install it in whichever way suits you. Each plugin’s own README has full instructions and details of any accounts or tools you’ll need.
+
+### Without a terminal: the Claude app (web or desktop)
+
+This is the easiest route if you don’t use a terminal.
+
+1. Go to the [releases page](https://github.com/SimpleCalmAI/SimpleCalm-shared-skills/releases) and find the newest release for the plugin you want, for example `laya-training`. Under **Assets**, download the skill ZIP, for example `laya-training-skill.zip`. Don’t unzip it.
+2. In Claude, open **Customize** (called **Plugins** on accounts with the newer layout), go to Skills, and upload the ZIP. Enable the skill. Code execution and file creation must be enabled; your organisation’s settings may also apply.
+3. Start a new chat and ask Claude to use the skill. The plugin’s README has a suggested first prompt.
+
+If the interface changes, follow [Claude’s current skill installation guidance](https://support.claude.com/en/articles/12512180-use-skills-in-claude).
+
+### With a command line
 
 1. **As a plugin, through Claude Code.** In Claude Code, add this repository as a marketplace, then install the plugin you want:
 
@@ -33,13 +45,13 @@ Choose a plugin or skill from the lists above, then install it in one of two way
    /plugin install laya-training@simplecalm-shared-skills
    ```
 
-2. **As individual skills, in any coding agent, using [skills.sh](https://skills.sh).** Run this in a terminal (it needs [Node.js](https://nodejs.org)), naming each skill you want with `--skill`:
+2. **As individual skills, in Codex and other coding agents, using [skills.sh](https://skills.sh).** Run this in a terminal (Terminal on a Mac, PowerShell or Git Bash on Windows), not inside the agent. It needs [Node.js](https://nodejs.org). Name each skill you want with `--skill`:
 
    ```
    npx skills add SimpleCalmAI/SimpleCalm-shared-skills --skill laya-training -g
    ```
 
-   You can repeat `--skill` to install several skills at once.
+   The `-g` installs the skill for your whole user account. You can repeat `--skill` to install several skills at once. Choose your agents when asked, then restart your agent.
 
 ## For contributors
 

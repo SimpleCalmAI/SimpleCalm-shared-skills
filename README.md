@@ -30,7 +30,7 @@ Choose a plugin or skill from the lists above, then install it in whichever way 
 
 This is the easiest route if you don’t use a terminal.
 
-1. Go to the [releases page](https://github.com/SimpleCalmAI/SimpleCalm-shared-skills/releases) and find the newest release for the plugin you want, for example `laya-training`. Under **Assets**, download the skill ZIP, for example `laya-training-skill.zip`. Don’t unzip it.
+1. Go to the [releases page](https://github.com/SimpleCalmAI/SimpleCalm-shared-skills/releases) and open the newest release (marked **Latest**). Under **Assets**, download the ZIP for the skill you want, for example `laya-training-skill.zip`. Don’t unzip it.
 2. In Claude, open **Customize** (called **Plugins** on accounts with the newer layout), go to Skills, and upload the ZIP. Enable the skill. Code execution and file creation must be enabled; your organisation’s settings may also apply.
 3. Start a new chat and ask Claude to use the skill. The plugin’s README has a suggested first prompt.
 
@@ -55,7 +55,7 @@ If the interface changes, follow [Claude’s current skill installation guidance
 
 ## For contributors
 
-Each plugin is a folder in `plugins/` with a `plugin.json` at its root and its skills in `skills/<skill-name>/SKILL.md`. Run `python scripts/validate.py` (after `python3 -m pip install -r scripts/requirements.txt`, ideally in a virtual environment) to check your changes. The same check runs on every pull request. When a pull request that raises a plugin’s version is merged to `main`, a GitHub release is published for that plugin automatically.
+Each plugin is a folder in `plugins/` with a `plugin.json` at its root and its skills in `skills/<skill-name>/SKILL.md`. Run `python scripts/validate.py` (after `python3 -m pip install -r scripts/requirements.txt`, ideally in a virtual environment) to check your changes. The same check runs on every pull request. It also requires a higher plugin `version` (in `plugin.json` and its `.claude-plugin/` copy, and the plugin README’s “Version” line) whenever a plugin’s files change, and a higher `metadata.version` for any skill whose files change. A change to a plugin’s top-level `README.md` alone is exempt. When a pull request that raises a plugin’s version is merged to `main`, one GitHub release (tagged by date, for example `v2026.10.30`) is published automatically. It holds the ZIPs for every plugin and skill and is marked Latest.
 
 ## Use them. Adapt them.
 

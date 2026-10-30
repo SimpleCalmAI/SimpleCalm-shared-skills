@@ -2,6 +2,10 @@
 name: "laya-training"
 description: Fine-tune and evaluate Laya on labelled data, with before/after benchmarks. Use to train, fine-tune or retrain Laya, or learn the process through an optional guided Kaggle walkthrough with a bundled practice dataset.
 license: Apache-2.0
+compatibility: Needs Python 3 to run the bundled scripts. Fine-tuning runs on Kaggle (free account, GPU T4 x2 accelerator, internet access for package installation), so no local GPU is required.
+metadata:
+  author: SimpleCalm AI
+  version: "1.0.11"
 ---
 
 <!-- Copyright 2026 SimpleCalm Labs Ltd and contributors. SPDX-License-Identifier: Apache-2.0 -->

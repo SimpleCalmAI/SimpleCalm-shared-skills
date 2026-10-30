@@ -5,3 +5,6 @@ skills-lock.json
 # Python and release files
 __pycache__/
 *.zip
+
+# Local release build output
+dist/

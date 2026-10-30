@@ -1,0 +1,57 @@
+name: release
+
+# When a PR is merged to main, publish a GitHub release for every plugin whose
+# version has no release yet (tag <plugin>-v<version>). Merges that do not change
+# a plugin's version publish nothing.
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -r scripts/requirements.txt
+      - run: python scripts/validate.py
+      - name: Publish new plugin versions
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TARGET_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python scripts/build_release.py list | jq -c '.[]' | while read -r plugin; do
+            name=$(jq -r .name <<<"$plugin")
+            version=$(jq -r .version <<<"$plugin")
+            description=$(jq -r .description <<<"$plugin")
+            tag="${name}-v${version}"
+            if gh release view "$tag" >/dev/null 2>&1; then
+              echo "$tag already released; skipping"
+              continue
+            fi
+            out="dist/$name"
+            python scripts/build_release.py build "$name" "$out"
+            gh release create "$tag" "$out"/*.zip \
+              --target "$TARGET_SHA" \
+              --title "$name $version" \
+              --notes "${description}"$'\n\n'"See plugins/${name}/README.md for instructions and details." \
+              --generate-notes \
+              --latest=false
+            echo "released $tag"
+          done

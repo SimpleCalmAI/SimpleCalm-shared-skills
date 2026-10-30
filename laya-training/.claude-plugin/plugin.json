@@ -1,9 +1,0 @@
-{
-  "name": "laya-training",
-  "version": "1.0.10",
-  "license": "Apache-2.0",
-  "author": {
-    "name": "SimpleCalm AI"
-  },
-  "description": "Fine-tune and evaluate Laya on labelled data, with before/after benchmarks. Use to train, fine-tune or retrain Laya, or learn the process through an optional guided Kaggle walkthrough with a bundled practice dataset."
-}

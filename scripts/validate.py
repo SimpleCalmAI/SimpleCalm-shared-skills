@@ -354,6 +354,22 @@ def main():
             error(rel, "skills CLI discovery would find "
                        f"{sorted(discovered)} but the repository contains {sorted(all_skill_names)}")
 
+    # skills.sh only reads SKILL.md from standard folders (skills/, .agents/skills/ ...), not plugins/*/skills/,
+    # so every plugin's skills folder must be listed here or its skills.sh page shows no SKILL.md.
+    skills_sh_path = root / "skills.sh.json"
+    skills_sh = load_json(skills_sh_path, root)
+    if skills_sh is not None:
+        rel = skills_sh_path.relative_to(root)
+        paths = skills_sh.get("paths")
+        if not isinstance(paths, list) or not all(isinstance(p, str) and p.startswith("./") for p in paths):
+            error(rel, "'paths' must be a list of './' relative paths")
+        else:
+            expected = {f"./plugins/{d.name}/skills" for d in plugin_dirs if (d / "skills").is_dir()}
+            for missing in sorted(expected - set(paths)):
+                error(rel, f"'{missing}' is not in 'paths', so skills.sh will not show its skills' SKILL.md")
+            for extra in sorted(set(paths) - expected):
+                error(rel, f"'{extra}' in 'paths' is not a plugin skills folder")
+
     for line in warnings:
         print(f"warning: {line}")
     for line in errors:

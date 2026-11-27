@@ -11,6 +11,7 @@ A plugin is a bundle of one or more skills (and, in future, MCP server definitio
 | Plugin | Components |
 |---|---|
 | [laya-training](./plugins/laya-training/) | 1 skill |
+| [video-production-assistant](./plugins/video-production-assistant/) | 1 skill |
 
 ## Skills
 
@@ -19,6 +20,7 @@ A skill is a single set of instructions your AI assistant can follow. You can in
 | Skill | Plugin | What it does |
 |---|---|---|
 | laya-training | [laya-training](./plugins/laya-training/) | Guides you through fine-tuning and evaluating Laya, a model for focused decisions. Includes a practice dataset and a walkthrough using Kaggle. |
+| video-production-assistant | [video-production-assistant](./plugins/video-production-assistant/) | Turns raw recordings into a finished video with command-line tools: cuts pauses and retakes, adds titles, music and captions, and checks the result, with your approval at each step. |
 
 We’ll add more as we develop them.
 

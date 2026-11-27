@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "video-production-assistant",
+  "version": "0.1.0",
+  "description": "Edit raw recordings into a polished video with command-line tools: transcript-based cuts, titles and lower thirds, music, captions and a quality check, one approved step at a time. Use to edit, cut, tidy, caption or finish a video, or to plan and script one before recording.",
+  "author": {
+    "name": "SimpleCalm AI"
+  },
+  "repository": "https://github.com/SimpleCalmAI/SimpleCalm-shared-skills",
+  "license": "Apache-2.0"
+}

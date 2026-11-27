@@ -1,0 +1,15 @@
+Video Production Assistant skill by SimpleCalm AI
+Copyright 2026 SimpleCalm Labs Ltd (trading as SimpleCalm AI) and contributors.
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+This package provides editing instructions, helper scripts and optional
+installers. It installs or calls other software, including FFmpeg, Python,
+Node.js, Blender, yt-dlp, uv, faster-whisper and HyperFrames. None of that
+software is bundled here; each is obtained separately and remains subject to
+its own licence and notices.
+
+References to StreamYard, ElevenLabs, vidIQ, HeyGen and other products
+identify what the skill works with. They do not imply endorsement by or
+affiliation with their owners.
+
+This NOTICE is informational and does not add restrictions to the licence.

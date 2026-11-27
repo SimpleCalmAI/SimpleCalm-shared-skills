@@ -9,6 +9,11 @@
       "name": "laya-training",
       "source": "./plugins/laya-training",
       "description": "Learn to fine-tune and evaluate Laya, the open-weight System 1 decision model, with a guided Kaggle walkthrough and bundled practice data."
+    },
+    {
+      "name": "video-production-assistant",
+      "source": "./plugins/video-production-assistant",
+      "description": "Edit raw recordings into a polished video with command-line tools, from transcript-based cuts to captions, music and a final quality check."
     }
   ]
 }

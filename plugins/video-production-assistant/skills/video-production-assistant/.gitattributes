@@ -1,0 +1,5 @@
+# Shell scripts keep LF line endings on every computer.
+# Without this, a Windows clone with core.autocrlf=true checks them out with CRLF,
+# and sh, Git Bash and WSL then refuse to run them.
+# This file sits in the skill folder so it travels with the skill when the folder is copied.
+*.sh text eol=lf

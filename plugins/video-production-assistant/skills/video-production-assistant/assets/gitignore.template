@@ -1,0 +1,22 @@
+# Secrets
+.env
+.env.local
+
+# Python
+_tools/venv/
+_tools/models/
+__pycache__/
+*.pyc
+
+# Large media: keep recordings and renders out of git
+_inbox/
+_archive/
+*/01_raw/
+*/02_work/
+*/04_exports/
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.wav
+*.mp3

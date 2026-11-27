@@ -1,0 +1,42 @@
+{
+  "_comment": "Optional MCP connectors for the video production assistant. None is required. setup_connectors.py merges the ones you choose into an MCP config file. No secrets belong in this file.",
+  "connectors": {
+    "elevenlabs": {
+      "title": "ElevenLabs",
+      "adds": "Scribe transcripts, voice isolation, music, sound effects, text-to-speech",
+      "cost": "Paid credits (small free tier). The assistant asks before every use.",
+      "needs": "uv (uvx) installed; ELEVENLABS_API_KEY set in your environment",
+      "server_name": "ElevenLabs",
+      "config": {
+        "command": "uvx",
+        "args": ["elevenlabs-mcp"],
+        "env": {"ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}"}
+      }
+    },
+    "vidiq": {
+      "title": "vidIQ",
+      "adds": "YouTube keyword research, outlier videos, competitor stats, transcripts, monthly review",
+      "cost": "vidIQ plan credits; your plan must include MCP access.",
+      "needs": "A vidIQ account. You sign in through the browser on first use.",
+      "server_name": "vidiq",
+      "config": {"type": "http", "url": "https://mcp.vidiq.com/mcp"}
+    },
+    "desktop-commander": {
+      "title": "Desktop Commander (shell connector)",
+      "adds": "Lets a chat-only agent run commands and edit files on your computer",
+      "cost": "Free, open source.",
+      "needs": "Node.js. Skip it if your agent already has a shell.",
+      "server_name": "desktop-commander",
+      "wrap_npx_on_windows": true,
+      "config": {"command": "npx", "args": ["-y", "@wonderwhy-er/desktop-commander"]}
+    },
+    "hyperframes": {
+      "title": "HyperFrames by HeyGen (hosted)",
+      "adds": "Shareable HeyGen video project rendered in the cloud",
+      "cost": "HeyGen account; may use credits.",
+      "needs": "Add it by name from your agent's connector directory and sign in. No config entry is written. The free local CLI (npx hyperframes) needs no connector.",
+      "server_name": null,
+      "config": null
+    }
+  }
+}

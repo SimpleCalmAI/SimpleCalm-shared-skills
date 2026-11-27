@@ -1,0 +1,4 @@
+# Minimum tool versions. doctor.py, install/install.sh and install/install.ps1 all read
+# this file, so change a minimum here and nowhere else.
+NODE_MIN=22
+PYTHON_MIN=3.9
